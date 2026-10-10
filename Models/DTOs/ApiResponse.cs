@@ -6,33 +6,28 @@ public class ApiResponse
     public required string Message { get; set; }
     public object? Data { get; set; }
 
-    public static ApiResponse Ok( string message = "Success",  object? data = null)
+    public static ApiResponse Ok( string message = "Success", object? data = null)
     {
-        return new ApiResponse
-        {
-            StatusCode = 200,
-            Message = message,
-            Data = data
-        };
+        return Custom(200, message, data);
     }
 
     public static ApiResponse Fail( int statusCode = 400, string message = "Something went wrong", object? data = null)
+    {
+        return Custom(statusCode, message, data);
+    }
+
+    public static ApiResponse NotFound(string message = "Resource not found")
+    {
+        return Custom(404, message);
+    }
+
+    public static ApiResponse Custom( int statusCode, string message, object? data = null)
     {
         return new ApiResponse
         {
             StatusCode = statusCode,
             Message = message,
             Data = data
-        };
-    }
-
-    public static ApiResponse NotFound( string message = "Resource not found")
-    {
-        return new ApiResponse
-        {
-            StatusCode = 404,
-            Message = message,
-            Data = null
         };
     }
 }

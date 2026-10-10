@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShopFlowAPI.Models.DTOs;
 using ShopFlowAPI.Services.IServices;
@@ -33,10 +34,12 @@ public class ProductController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Roles = "Admin")]
     public async Task<ApiResponse> CreateProduct([FromBody] ProductDto productDto)
         => ApiResponse.Ok("Product created successfully", await _productService.CreateProductAsync(productDto));
 
     [HttpPut("{id}")]
+    [Authorize(Roles = "Admin")]
     public async Task<ApiResponse> UpdateProduct([FromRoute] int id, [FromBody] ProductDto productDto)
     {
         var product = await _productService.UpdateProductAsync(id, productDto);
@@ -50,6 +53,7 @@ public class ProductController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Roles = "Admin")]
     public async Task<ApiResponse> DeleteProduct([FromRoute] int id)
     {
         var deleted = await _productService.DeleteProductAsync(id);

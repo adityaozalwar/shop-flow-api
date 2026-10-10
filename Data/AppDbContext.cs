@@ -1,9 +1,11 @@
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using ShopFlowAPI.Models;
+using ShopFlowAPI.Models.Auth;
 
 namespace ShopFlowAPI.Data;
 
-public class AppDbContext : DbContext
+public class AppDbContext : IdentityDbContext<ApplicationUser>
 {
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {
@@ -16,5 +18,4 @@ public class AppDbContext : DbContext
     public DbSet<Order> Orders { get; set; }
     public DbSet<CartHeader> CartHeaders { get; set; }
     public DbSet<CartDetails> CartDetails { get; set; }
-    public DbSet<Users> Users { get; set; }
 }
