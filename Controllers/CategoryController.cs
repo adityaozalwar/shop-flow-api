@@ -1,9 +1,11 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShopFlowAPI.Models.DTOs;
 using ShopFlowAPI.Services.IServices;
 
 namespace ShopFlowAPI.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/categories")]
 public class CategoryController : ControllerBase

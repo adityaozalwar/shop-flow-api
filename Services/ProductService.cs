@@ -61,4 +61,24 @@ public class ProductService : IProductService
 
         return true;
     }
+
+    public async Task<PagedResponse<ProductDto>> GetPagedProductsAsync(int pageNumber, int pageSize, string sortBy, string sortOrder)
+    {
+        if (pageNumber < 1) throw new ArgumentOutOfRangeException(nameof(pageNumber), "Page number must be at least 1.");
+        if (pageSize < 1 || pageSize > 100) throw new ArgumentOutOfRangeException(nameof(pageSize), "Page size must be between 1 and 100.");
+        if (string.IsNullOrWhiteSpace(sortOrder)) sortOrder = "asc";
+        if (!sortOrder.Equals("asc", StringComparison.OrdinalIgnoreCase) && !sortOrder.Equals("desc", StringComparison.OrdinalIgnoreCase)) throw new ArgumentException("sortOrder must be 'asc' or 'desc'.");
+
+        var result = await _unitOfWork.Product.GetPagedProductsAsync(pageNumber, pageSize, sortBy, sortOrder.Equals("desc", StringComparison.OrdinalIgnoreCase));
+        var items = result.Items.Select(ProductMapper.ToDto).ToList();
+
+        return new PagedResponse<ProductDto>
+        {
+            Items = items,
+            PageNumber = pageNumber,
+            PageSize = pageSize,
+            TotalCount = result.TotalCount,
+            TotalPages = (int)Math.Ceiling(result.TotalCount / (double)pageSize)
+        };
+    }
 }

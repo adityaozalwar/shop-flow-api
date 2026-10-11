@@ -16,10 +16,19 @@ public class ProductController : ControllerBase
         _productService = productService;
     }
     
+    // [HttpGet]
+    // public async Task<ApiResponse> GetProducts()
+    //     => ApiResponse.Ok("Fetched products successfully", await _productService.GetProductsAsync());
+    
+    // GET : /api/products?pageNumber=1&pageSize=10
     [HttpGet]
-    public async Task<ApiResponse> GetProducts()
-        => ApiResponse.Ok("Fetched products successfully", await _productService.GetProductsAsync());
-
+    public async Task<IActionResult> GetProducts([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10, [FromQuery] string sortBy = "productId", [FromQuery] string sortOrder = "asc")
+    { 
+        var result = await _productService.GetPagedProductsAsync(pageNumber, pageSize, sortBy, sortOrder);
+        var response = ApiResponse.Custom(200, "Products retrieved successfully.", result);
+        return StatusCode(response.StatusCode, response);
+    }
+    
     [HttpGet("{id}")]
     public async Task<ApiResponse> GetProductById([FromRoute] int id)
     {
