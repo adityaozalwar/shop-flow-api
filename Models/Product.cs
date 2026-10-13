@@ -19,10 +19,15 @@ public class Product
     [Column("category_id")]
     public int CategoryId { get; set; }
     
+    [ForeignKey(nameof(CategoryId))]
+    public Category Category { get; set; } = null!;
+    
     [Column("created_at")]
     public DateTime CreatedAt { get; set; }
     
     [Column("modified_at")]
     public DateTime ModifiedAt { get; set; }
+    
+    public Inventory?  Inventory { get; set; }
     
 }

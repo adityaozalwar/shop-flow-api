@@ -10,6 +10,12 @@ public class CartDetails
     [Column("cart_details_id")]
     public int CartDetailsId { get; set; }
     
+    [Column("cart_header_id")]
+    public int CartHeaderId { get; set; }
+    
+    [ForeignKey(nameof(CartHeaderId))]
+    public CartHeader CartHeader { get; set; } = null!;
+    
     [Column("product_id")]
     public int ProductId { get; set; }
     

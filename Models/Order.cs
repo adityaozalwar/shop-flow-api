@@ -14,6 +14,9 @@ public class Order
     [Column("cart_header_id")]
     public int CartHeaderId { get; set; }
     
+    [ForeignKey(nameof(CartHeaderId))]
+    public CartHeader CartHeader { get; set; } = null!;
+    
     [Column("order_status")]
     public OrderStatus OrderStatus { get; set; }
     

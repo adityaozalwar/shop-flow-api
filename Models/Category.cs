@@ -18,4 +18,6 @@ public class Category
     
     [Column("modified_at")]
     public DateTime ModifiedAt { get; set; }
+    
+    public ICollection<Product> Products { get; set; } = new List<Product>();
 }

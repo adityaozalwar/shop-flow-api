@@ -230,6 +230,10 @@ namespace ShopFlowAPI.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("CartDetailsId"));
 
+                    b.Property<int>("CartHeaderId")
+                        .HasColumnType("integer")
+                        .HasColumnName("cart_header_id");
+
                     b.Property<int>("CartQuantity")
                         .HasColumnType("integer")
                         .HasColumnName("cart_quantity");
@@ -247,6 +251,8 @@ namespace ShopFlowAPI.Migrations
                         .HasColumnName("product_id");
 
                     b.HasKey("CartDetailsId");
+
+                    b.HasIndex("CartHeaderId");
 
                     b.ToTable("cart_details");
                 });
@@ -272,7 +278,15 @@ namespace ShopFlowAPI.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("modified_at");
 
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("user_id");
+
                     b.HasKey("CartHeaderId");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("cart_header");
                 });
@@ -335,6 +349,9 @@ namespace ShopFlowAPI.Migrations
 
                     b.HasKey("InventoryId");
 
+                    b.HasIndex("ProductId")
+                        .IsUnique();
+
                     b.ToTable("inventory");
                 });
 
@@ -368,6 +385,9 @@ namespace ShopFlowAPI.Migrations
                         .HasColumnName("user_id");
 
                     b.HasKey("OrderId");
+
+                    b.HasIndex("CartHeaderId")
+                        .IsUnique();
 
                     b.ToTable("order");
                 });
@@ -403,6 +423,8 @@ namespace ShopFlowAPI.Migrations
                         .HasColumnName("product_name");
 
                     b.HasKey("ProductId");
+
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("product");
                 });
@@ -456,6 +478,78 @@ namespace ShopFlowAPI.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("ShopFlowAPI.Models.CartDetails", b =>
+                {
+                    b.HasOne("ShopFlowAPI.Models.CartHeader", "CartHeader")
+                        .WithMany("CartDetails")
+                        .HasForeignKey("CartHeaderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CartHeader");
+                });
+
+            modelBuilder.Entity("ShopFlowAPI.Models.CartHeader", b =>
+                {
+                    b.HasOne("ShopFlowAPI.Models.Auth.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ShopFlowAPI.Models.Inventory", b =>
+                {
+                    b.HasOne("ShopFlowAPI.Models.Product", "Product")
+                        .WithOne("Inventory")
+                        .HasForeignKey("ShopFlowAPI.Models.Inventory", "ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("ShopFlowAPI.Models.Order", b =>
+                {
+                    b.HasOne("ShopFlowAPI.Models.CartHeader", "CartHeader")
+                        .WithOne("Order")
+                        .HasForeignKey("ShopFlowAPI.Models.Order", "CartHeaderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CartHeader");
+                });
+
+            modelBuilder.Entity("ShopFlowAPI.Models.Product", b =>
+                {
+                    b.HasOne("ShopFlowAPI.Models.Category", "Category")
+                        .WithMany("Products")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("ShopFlowAPI.Models.CartHeader", b =>
+                {
+                    b.Navigation("CartDetails");
+
+                    b.Navigation("Order");
+                });
+
+            modelBuilder.Entity("ShopFlowAPI.Models.Category", b =>
+                {
+                    b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("ShopFlowAPI.Models.Product", b =>
+                {
+                    b.Navigation("Inventory");
                 });
 #pragma warning restore 612, 618
         }

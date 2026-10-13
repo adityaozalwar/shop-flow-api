@@ -13,6 +13,9 @@ public class Inventory
     [Column("product_id")]
     public int ProductId { get; set; }
     
+    [ForeignKey(nameof(ProductId))]
+    public Product Product { get; set; } = null!;
+    
     [Column("quantity")]
     public int Quantity { get; set; }
     
