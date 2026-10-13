@@ -14,8 +14,17 @@ public static class ProductMapper
             ProductName = product.ProductName,
             Price = product.Price,
             CategoryId = product.CategoryId,
+            CategoryName = product.Category?.CategoryName,
             CreatedAt = product.CreatedAt,
-            ModifiedAt = product.ModifiedAt
+            ModifiedAt = product.ModifiedAt,
+            
+            Inventory = product.Inventory == null ? null : new InventoryDto
+            {
+                InventoryId = product.Inventory.InventoryId,
+                ProductId = product.Inventory.ProductId,
+                Quantity = product.Inventory.Quantity,
+                ReservedQuantity = product.Inventory.ReservedQuantity
+            }
         };
     }
 

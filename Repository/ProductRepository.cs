@@ -37,7 +37,13 @@ public class ProductRepository : Repository<Product>, IProductRepository
         var items = await orderedQuery.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
         return (items, totalCount);
     }
-    
+
+    public async Task<Product?> GetByIdWithCategoryAndInventoryAsync(int id)
+    => await _dbSet.AsNoTracking()
+            .Include(c=>c.Category)
+            .Include(i=>i.Inventory)
+            .FirstOrDefaultAsync(p => p.ProductId == id);
+
     public async Task<Product?> UpdateAsync(int id, Product product)
     {
         var existing = await _dbSet.FindAsync(id);

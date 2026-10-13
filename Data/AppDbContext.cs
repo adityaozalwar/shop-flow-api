@@ -26,8 +26,13 @@ public class AppDbContext : IdentityDbContext<ApplicationUser>
         modelBuilder.Entity<Product>()
             .HasOne(p => p.Category)
             .WithMany(c => c.Products)
-            .HasForeignKey(p => p.CategoryId);
-  
+            .HasForeignKey(p => p.CategoryId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Product>()
+            .HasOne(p => p.Inventory)
+            .WithOne(i => i.Product)
+            .HasForeignKey<Inventory>(i => i.ProductId);
         
         modelBuilder.Entity<CartHeader>()
             .HasMany(c => c.CartDetails)

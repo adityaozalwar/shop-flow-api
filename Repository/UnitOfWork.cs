@@ -12,6 +12,7 @@ public class UnitOfWork : IUnitOfWork
 
     public UnitOfWork(AppDbContext dbContext)
     {
+        _context = dbContext;
         Product = new ProductRepository(dbContext);
         Category = new CategoryRepository(dbContext);
         Inventory = new InventoryRepository(dbContext);

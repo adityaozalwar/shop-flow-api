@@ -15,7 +15,8 @@ public class ProductDto
 
     [Range(1, int.MaxValue, ErrorMessage = "Please select a valid category")]
     public int CategoryId { get; set; }
-
+    public string? CategoryName { get; set; } = string.Empty;
+    public InventoryDto? Inventory { get; set; }
     public DateTime CreatedAt { get; set; }
 
     public DateTime ModifiedAt { get; set; }

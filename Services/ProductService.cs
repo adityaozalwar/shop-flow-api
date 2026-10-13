@@ -23,7 +23,7 @@ public class ProductService : IProductService
 
     public async Task<ProductDto?> GetProductByIdAsync(int id)
     {
-        var product = await _unitOfWork.Product.GetByIdAsync(id);
+        var product = await _unitOfWork.Product.GetByIdWithCategoryAndInventoryAsync(id);
         return product == null ? null : ProductMapper.ToDto(product);
     }
 
