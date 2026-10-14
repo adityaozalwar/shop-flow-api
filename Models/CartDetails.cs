@@ -18,6 +18,9 @@ public class CartDetails
     
     [Column("product_id")]
     public int ProductId { get; set; }
+
+    [ForeignKey(nameof(ProductId))]
+    public Product Product { get; set; } = null!;
     
     [Column("cart_quantity")]
     public int CartQuantity { get; set; }

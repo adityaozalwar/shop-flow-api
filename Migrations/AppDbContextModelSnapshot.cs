@@ -252,7 +252,10 @@ namespace ShopFlowAPI.Migrations
 
                     b.HasKey("CartDetailsId");
 
-                    b.HasIndex("CartHeaderId");
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("CartHeaderId", "ProductId")
+                        .IsUnique();
 
                     b.ToTable("cart_details");
                 });
@@ -380,8 +383,9 @@ namespace ShopFlowAPI.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("payment_status");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer")
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text")
                         .HasColumnName("user_id");
 
                     b.HasKey("OrderId");
@@ -488,7 +492,15 @@ namespace ShopFlowAPI.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("ShopFlowAPI.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("CartHeader");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("ShopFlowAPI.Models.CartHeader", b =>
@@ -529,7 +541,7 @@ namespace ShopFlowAPI.Migrations
                     b.HasOne("ShopFlowAPI.Models.Category", "Category")
                         .WithMany("Products")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Category");

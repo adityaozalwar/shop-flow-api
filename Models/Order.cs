@@ -27,5 +27,5 @@ public class Order
     public DateTime OrderDate { get; set; }
     
     [Column("user_id")]
-    public int UserId { get; set; }
+    public required string UserId { get; set; }
 }

@@ -59,6 +59,16 @@ public class AppDbContext : IdentityDbContext<ApplicationUser>
         modelBuilder.Entity<CartHeader>()
             .HasIndex(c => c.UserId)
             .IsUnique();
+
+        modelBuilder.Entity<CartDetails>()
+            .HasOne(d => d.Product)
+            .WithMany()
+            .HasForeignKey(d => d.ProductId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<CartDetails>()
+            .HasIndex(d => new { d.CartHeaderId, d.ProductId })
+            .IsUnique();
     
     }
 }

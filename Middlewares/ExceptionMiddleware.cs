@@ -1,5 +1,6 @@
 using System.Net;
 using System.Text.Json;
+using ShopFlowAPI.Exceptions;
 using ShopFlowAPI.Models.DTOs;
 
 namespace ShopFlowAPI.Middlewares;
@@ -18,10 +19,14 @@ public class ExceptionMiddleware(RequestDelegate next)
             if (context.Response.HasStarted) throw;
 
             context.Response.Clear();
-            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+            var statusCode = ex is AppException appEx
+                ? appEx.StatusCode
+                : (int)HttpStatusCode.InternalServerError;
+
+            context.Response.StatusCode = statusCode;
             context.Response.ContentType = "application/json";
             
-            var response = ApiResponse .Fail((int)HttpStatusCode.InternalServerError, ex.Message);
+            var response = ApiResponse.Fail(statusCode, ex.Message);
 
             await context.Response.WriteAsync(JsonSerializer.Serialize(response));
         }
