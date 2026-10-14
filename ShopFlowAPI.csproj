@@ -21,7 +21,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Content Include=".github\.workflows\render-keepalive.yml" />
+      <Content Include=".github\workflows\render-keepalive.yml" />
     </ItemGroup>
 
 </Project>
