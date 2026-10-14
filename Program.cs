@@ -138,7 +138,14 @@ app.UseAuthorization();
 app.MapControllers();
 app.MapGet("/", () => "ShopFlowAPI is running....");
 
+app.MapGet("/health", () => Results.Ok(new
+{
+    status = "Healthy",
+    timestamp = DateTime.UtcNow
+}));
+
 await IdentitySeeder.SeedRolesAsync(app.Services);
 await IdentitySeeder.SeedAdminAsync(app.Services, app.Configuration);
+await DbSeeder.SeedDemoDataAsync(app.Services, app.Configuration);
 
 app.Run();
