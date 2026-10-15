@@ -29,11 +29,6 @@ public class AppDbContext : IdentityDbContext<ApplicationUser>
             .HasForeignKey(p => p.CategoryId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        modelBuilder.Entity<Product>()
-            .HasOne(p => p.Inventory)
-            .WithOne(i => i.Product)
-            .HasForeignKey<Inventory>(i => i.ProductId);
-        
         modelBuilder.Entity<CartHeader>()
             .HasMany(c => c.CartDetails)
             .WithOne(d => d.CartHeader)
@@ -45,13 +40,7 @@ public class AppDbContext : IdentityDbContext<ApplicationUser>
             .WithOne(o => o.CartHeader)
             .HasForeignKey<Order>(o => o.CartHeaderId);
         
-        modelBuilder.Entity<Product>()
-            .HasOne(p => p.Inventory)
-            .WithOne(i => i.Product)
-            .HasForeignKey<Inventory>(i => i.ProductId);
-        
-        
-        modelBuilder.Entity<CartHeader>().HasOne(c => c.User)
+        modelBuilder.Entity<CartHeader>().HasOne<ApplicationUser>()
             .WithMany()
             .HasForeignKey(c => c.UserId)
             .OnDelete(DeleteBehavior.Restrict);

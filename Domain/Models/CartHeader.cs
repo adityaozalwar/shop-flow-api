@@ -1,6 +1,5 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using ShopFlowAPI.Models.Auth;
 
 namespace ShopFlowAPI.Models;
 
@@ -13,8 +12,6 @@ public class CartHeader
     
     [Column("user_id")]
     public required string UserId { get; set; }
-    [ForeignKey(nameof(UserId))]
-    public ApplicationUser User { get; set; } = null!;
     
     [Column("cart_price")]
     public double CartPrice { get; set; }

@@ -1,6 +1,6 @@
 # ShopFlow
 
-A simple e-commerce order management REST API built with **ASP.NET Core**, **Repository Pattern**, and **EF Core**.
+A simple e-commerce order management REST API built with **ASP.NET Core**, **Clean Architecture**, and **EF Core**.
 
 Customers browse products, add to cart, and place orders. Admins manage products and update order status.
 
@@ -12,6 +12,17 @@ Customers browse products, add to cart, and place orders. Admins manage products
 - Cart and place order (inside a database transaction)
 - Order status flow: Placed → Paid → Shipped → Delivered
 - Global error handling, logging, and Swagger docs
+
+## Architecture
+
+The solution is split into four projects:
+
+- `Domain` contains the business entities and domain enums.
+- `Application` contains use cases, service and repository contracts, DTOs, and mapping.
+- `Infrastructure` contains EF Core persistence, repositories, Identity/JWT implementation, and database seeding.
+- `ShopFlowAPI` is the HTTP API host and composition root.
+
+Dependencies point inward: Infrastructure implements Application contracts, while the API host wires the layers together.
 
 ## Tech Stack
 
@@ -28,7 +39,7 @@ dotnet restore
 Set your PostgreSQL connection string in `appsettings.Development.json`, then run:
 
 ```bash
-dotnet ef database update
+dotnet ef database update --project Infrastructure/ShopFlowAPI.Infrastructure.csproj --startup-project ShopFlowAPI.csproj
 dotnet run --project ShopFlowAPI
 ```
 
@@ -38,7 +49,6 @@ Open the app at `http://localhost:7173/`.
 
 ShopFlow is a learning project that is growing step by step. Planned work:
 
-- [ ] Move to Clean Architecture (Api, Application, Domain, Infrastructure)
 - [ ] Unit and integration tests
 - [ ] CI/CD (GitHub Actions)
 

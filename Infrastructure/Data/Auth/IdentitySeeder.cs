@@ -1,4 +1,6 @@
 using ShopFlowAPI.Models.Auth;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ShopFlowAPI.Data.Auth;
 

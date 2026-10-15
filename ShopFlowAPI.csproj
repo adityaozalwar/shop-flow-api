@@ -8,20 +8,24 @@
   </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="10.0.0" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.0" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.12" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.12">
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
           <PrivateAssets>all</PrivateAssets>
         </PackageReference>
-        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.3" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="10.3.0" />
     </ItemGroup>
 
     <ItemGroup>
       <Content Include=".github\workflows\render-keepalive.yml" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="Application/**/*.cs" />
+      <Compile Remove="Domain/**/*.cs" />
+      <Compile Remove="Infrastructure/**/*.cs" />
+      <ProjectReference Include="Application/ShopFlowAPI.Application.csproj" />
+      <ProjectReference Include="Infrastructure/ShopFlowAPI.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>
